@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
    base: 'todo',
-
+  server: {
+    port: 3003, // Change to an available port
+  },
 })
 

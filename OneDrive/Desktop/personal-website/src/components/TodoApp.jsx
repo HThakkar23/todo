@@ -99,6 +99,22 @@ const TodoApp = () => {
         });
     };
 
+    const setSubTaskDueDate = (parentId, subTaskId, date) => {
+        const updatedTasks = userTasks[loggedInUser.username].map((t) => {
+            if (t.id === parentId) {
+                const updatedSubTasks = t.subTasks.map((subTask) =>
+                    subTask.id === subTaskId ? { ...subTask, dueDate: date } : subTask
+                );
+                return { ...t, subTasks: updatedSubTasks };
+            }
+            return t;
+        });
+        setUserTasks({
+            ...userTasks,
+            [loggedInUser.username]: updatedTasks,
+        });
+    };
+
     const toggleTaskCompletion = (id) => {
         const updatedTasks = userTasks[loggedInUser.username].filter((t) => t.id !== id);
         setUserTasks({
@@ -125,6 +141,7 @@ const TodoApp = () => {
             });
         }
     };
+
 
     const getTagColor = (tag) => '#00008B';
 
@@ -340,6 +357,18 @@ const TodoApp = () => {
                                     border: '1px solid rgba(255, 255, 255, 0.3)',
                                 }}
                             />
+                            <input
+                                type="date"
+                                onChange={(e) => setTaskDueDate(t.id, e.target.value)}
+                                style={{
+                                    marginLeft: '16px',
+                                    padding: '4px',
+                                    borderRadius: '4px',
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    color: '#ffffff',
+                                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                                }}
+                            />
                         </div>
                         {t.subTasks && (
                             <ul style={{ listStyle: 'none', paddingLeft: '20px', marginTop: '8px' }}>
@@ -378,6 +407,18 @@ const TodoApp = () => {
                                             style={{ marginRight: '8px' }}
                                         />
                                         {subTask.text}
+                                        <input
+                                            type="date"
+                                            onChange={(e) => setSubTaskDueDate(t.id, subTask.id, e.target.value)}
+                                            style={{
+                                                marginLeft: '16px',
+                                                padding: '4px',
+                                                borderRadius: '4px',
+                                                background: 'rgba(255, 255, 255, 0.1)',
+                                                color: '#ffffff',
+                                                border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            }}
+                                        />
                                     </li>
                                 ))}
                             </ul>
